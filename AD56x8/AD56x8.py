@@ -407,7 +407,7 @@ class AD56x8(object):
         ldac_cmd.reg.CMD = CMD_LOAD_LDAC_REG
 
         if mode not in LDAC_MODE:
-            raise ValueError('{}: LDAC Error: LDAC mode must be Boolean'
+            raise ValueError('{}: LDAC Error: LDAC mode must be HW or SW'
                              .format(self.device))
         else:
             # Allow use of the channel name or number for selection
