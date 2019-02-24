@@ -253,8 +253,8 @@ class AD56x8(object):
                 command == CMD_WRITE_INPUT_RE_N_UPDATE_ALL:
             i.reg.CMD = command
         else:
-            raise ValueError(f'{self.device}: '
-                             f'Input Reg Error: Bad command selection')
+            raise ValueError(f"{self.device}: \
+                             Input Reg Error: Bad command selection")
 
         # Allow use of the channel name OR number for selection
         if channel in DAC_CHANNELS:
@@ -262,14 +262,13 @@ class AD56x8(object):
         elif channel in DAC_CHANNELS.values():
             i.reg.ADDR = channel
         else:
-            raise ValueError(f'{self.device}: '
-                             f'Input Reg Error: Bad DAC channel selection')
+            raise ValueError(f"{self.device}: Input Reg Error: \
+                             Bad DAC channel selection")
 
         # Shift data up to MSB end of the DATA field
         i.reg.DATA = value << (20 - self.DATA_WIDTH)
 
         self._write32(i.value)
-
 
     def write_to_Input_Regs(self, channel, value):
         """Set Input Register of specified channel.
@@ -310,10 +309,9 @@ class AD56x8(object):
         elif channel in DAC_CHANNELS.values():
             i.reg.ADDR = channel
         else:
-            raise ValueError(f'{self.device}: '
-                             f'Input Reg Error: Bad DAC channel selection')
+            raise ValueError(f"{self.device}: \
+                             Input Reg Error: Bad DAC channel selection")
         self._write32(i.value)
-
 
     def write_to_Input_Reg_update_all(self, channel, value):
         """Update all DAC registers from Input Registers
@@ -355,18 +353,17 @@ class AD56x8(object):
         elif channel in DAC_CHANNELS.values():
             power_down_cmd.reg.PD_CH_SEL = (1 << channel) & 0xff
         else:
-            raise ValueError(f'{self.device}: '
-                             f'Input Reg Error: Bad DAC channel selection')
+            raise ValueError(f"{self.device}: \
+                             Input Reg Error: Bad DAC channel selection")
 
         if mode not in PD_MODES:
-            raise ValueError(f'{self.device}: '
-                             f'Power Mode Error: Power down modes must be '
-                             f'NORMAL, 1K/GND, 100K/GND or TRISTATE')
+            raise ValueError(f"{self.device}: \
+                             Power Mode Error: Power down modes must be \
+                             NORMAL, 1K/GND, 100K/GND or TRISTATE")
         else:
             power_down_cmd.reg.PD_MODE = PD_MODES[mode]
 
         self._write32(power_down_cmd.value)
-
 
     def clear_code_mode(self, mode):
         """Set clear code mode for DAC
@@ -384,14 +381,13 @@ class AD56x8(object):
         clear_code_cmd.reg.CMD = CMD_LOAD_CLEAR_CODE_REG
 
         if mode not in CLEAR_CODES:
-            raise ValueError(f'{self.device}: '
-                             f'Clear Codes Error: Clear code must be '
-                             f'0x0000, 0x8000 or 0xFFFF')
+            raise ValueError(f"{self.device}: \
+                             Clear Codes Error: Clear code must be \
+                             0x0000, 0x8000 or 0xFFFF")
 
         clear_code_cmd.reg.CC_MODE = CLEAR_CODES[mode]
 
         self._write32(clear_code_cmd.value)
-
 
     def LDAC_mode(self, mode, channel):
         """Configure DAC to Load DAC Registers by command HW or SW command,
@@ -411,8 +407,8 @@ class AD56x8(object):
         ldac_cmd.reg.CMD = CMD_LOAD_LDAC_REG
 
         if mode not in LDAC_MODE:
-            raise ValueError(f'{self.device}: '
-                             f'LDAC Error: LDAC mode must be Boolean')
+            raise ValueError(f"{self.device}: \
+                             LDAC Error: LDAC mode must be Boolean")
         else:
             # Allow use of the channel name or number for selection
             if channel in DAC_CHANNELS:
@@ -421,8 +417,8 @@ class AD56x8(object):
             elif channel in DAC_CHANNELS.values():
                 ldac_cmd.reg.LDAC_MODE_CH = (LDAC_MODE[mode] << channel) & 0xff
             else:
-                raise ValueError(f'{self.device}: '
-                                 f'LDAC Error: Bad DAC channel selection')
+                raise ValueError(f"{self.device}: \
+                                 LDAC Error: Bad DAC channel selection")
 
         self._write32(ldac_cmd.value)
 
@@ -449,8 +445,8 @@ class AD56x8(object):
         ref_setup_cmd.reg.CMD = CMD_SETUP_INT_REF_REG
 
         if mode not in IREF_MODE:
-            raise ValueError(f'{self.device}: '
-                             f'IREF mode must be ON or OFF')
+            raise ValueError(f"{self.device}: \
+                             IREF mode must be ON or OFF")
 
         ref_setup_cmd.reg.IREF = IREF_MODE[mode]
 
