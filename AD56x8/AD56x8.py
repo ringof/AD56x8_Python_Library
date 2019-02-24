@@ -253,8 +253,8 @@ class AD56x8(object):
                 command == CMD_WRITE_INPUT_RE_N_UPDATE_ALL:
             i.reg.CMD = command
         else:
-            raise ValueError(f"{self.device}: \
-                             Input Reg Error: Bad command selection")
+            raise ValueError('{}: Input Reg Error: Bad command selection'
+                             .format(self.device))
 
         # Allow use of the channel name OR number for selection
         if channel in DAC_CHANNELS:
@@ -262,8 +262,8 @@ class AD56x8(object):
         elif channel in DAC_CHANNELS.values():
             i.reg.ADDR = channel
         else:
-            raise ValueError(f"{self.device}: Input Reg Error: \
-                             Bad DAC channel selection")
+            raise ValueError('{}: Input Reg Error: Bad DAC channel selection'
+                             .format(self.device))
 
         # Shift data up to MSB end of the DATA field
         i.reg.DATA = value << (20 - self.DATA_WIDTH)
@@ -309,8 +309,8 @@ class AD56x8(object):
         elif channel in DAC_CHANNELS.values():
             i.reg.ADDR = channel
         else:
-            raise ValueError(f"{self.device}: \
-                             Input Reg Error: Bad DAC channel selection")
+            raise ValueError('{}: Input Reg Error: Bad DAC channel selection'
+                             .format(self.device))
         self._write32(i.value)
 
     def write_to_Input_Reg_update_all(self, channel, value):
@@ -353,13 +353,13 @@ class AD56x8(object):
         elif channel in DAC_CHANNELS.values():
             power_down_cmd.reg.PD_CH_SEL = (1 << channel) & 0xff
         else:
-            raise ValueError(f"{self.device}: \
-                             Input Reg Error: Bad DAC channel selection")
+            raise ValueError('{self.device}: Input Reg Error: \
+                            Bad DAC channel selection'.format(self.device))
 
         if mode not in PD_MODES:
-            raise ValueError(f"{self.device}: \
-                             Power Mode Error: Power down modes must be \
-                             NORMAL, 1K/GND, 100K/GND or TRISTATE")
+            raise ValueError('{}: Power Mode Error: Power down modes must be \
+                             NORMAL, 1K/GND, 100K/GND or TRISTATE'
+                             .format(self.device))
         else:
             power_down_cmd.reg.PD_MODE = PD_MODES[mode]
 
@@ -381,9 +381,9 @@ class AD56x8(object):
         clear_code_cmd.reg.CMD = CMD_LOAD_CLEAR_CODE_REG
 
         if mode not in CLEAR_CODES:
-            raise ValueError(f"{self.device}: \
-                             Clear Codes Error: Clear code must be \
-                             0x0000, 0x8000 or 0xFFFF")
+            raise ValueError('{}: Clear Codes Error: Clear code must be \
+                             0x0000, 0x8000 or 0xFFFF'
+                             .format(self.device))
 
         clear_code_cmd.reg.CC_MODE = CLEAR_CODES[mode]
 
@@ -407,8 +407,8 @@ class AD56x8(object):
         ldac_cmd.reg.CMD = CMD_LOAD_LDAC_REG
 
         if mode not in LDAC_MODE:
-            raise ValueError(f"{self.device}: \
-                             LDAC Error: LDAC mode must be Boolean")
+            raise ValueError('{}: LDAC Error: LDAC mode must be Boolean'
+                             .format(self.device))
         else:
             # Allow use of the channel name or number for selection
             if channel in DAC_CHANNELS:
@@ -417,8 +417,8 @@ class AD56x8(object):
             elif channel in DAC_CHANNELS.values():
                 ldac_cmd.reg.LDAC_MODE_CH = (LDAC_MODE[mode] << channel) & 0xff
             else:
-                raise ValueError(f"{self.device}: \
-                                 LDAC Error: Bad DAC channel selection")
+                raise ValueError('{}: LDAC Error: Bad DAC channel selection'
+                                 .format(self.device))
 
         self._write32(ldac_cmd.value)
 
@@ -445,8 +445,8 @@ class AD56x8(object):
         ref_setup_cmd.reg.CMD = CMD_SETUP_INT_REF_REG
 
         if mode not in IREF_MODE:
-            raise ValueError(f"{self.device}: \
-                             IREF mode must be ON or OFF")
+            raise ValueError('{}: IREF mode must be ON or OFF'
+                             .format(self.device))
 
         ref_setup_cmd.reg.IREF = IREF_MODE[mode]
 
