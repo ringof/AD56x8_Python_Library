@@ -270,7 +270,7 @@ class AD56x8(object):
 
         self._write32(i.value)
 
-    def write_to_Input_Regs(self, channel, value):
+    def write_to_Input_Reg(self, channel, value):
         """Set Input Register of specified channel.
 
         Args:
@@ -286,7 +286,7 @@ class AD56x8(object):
 
         self._Input_Reg_helper(CMD_WRITE_INPUT_REG_N, channel, value)
 
-    def update_DAC_Regs(self, channel):
+    def update_DAC_Reg(self, channel):
         """Update channel's DAC Register from its Input Register.
 
         Args:
@@ -329,7 +329,7 @@ class AD56x8(object):
 
         self._Input_Reg_helper(CMD_WRITE_INPUT_RE_N_UPDATE_ALL, channel, value)
 
-    def power_mode(self, mode, channel):
+    def power_down_mode(self, mode, channel):
         """Set power down mode for DAC.
 
         Args:

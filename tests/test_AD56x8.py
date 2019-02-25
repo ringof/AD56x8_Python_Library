@@ -136,8 +136,8 @@ class TestAD56x8(unittest.TestCase):
                            int('10' * (data_width // 2), 2)]
 
             if command in dir(device):
-                if command == 'write_to_Input_Regs':
-                    testfunc = device.write_to_Input_Regs
+                if command == 'write_to_Input_Reg':
+                    testfunc = device.write_to_Input_Reg
                 elif command == 'write_to_Input_Reg_update_all':
                     testfunc = device.write_to_Input_Reg_update_all
                 else:
@@ -167,14 +167,14 @@ class TestAD56x8(unittest.TestCase):
                     self.assertEqual(data_expected, data_written)
                     gpio.clear()
 
-    def test_write_to_Input_Regs(self):
+    def test_write_to_Input_Reg(self):
 
         result_base = 0x00000000
-        test_command = 'write_to_Input_Regs'
-        debug_text = "Write to Input Regs Command, Channel / Value:"
+        test_command = 'write_to_Input_Reg'
+        debug_text = "Write to Input Reg Command, Channel / Value:"
         self._dac_input_test_helper(test_command, result_base, debug_text)
 
-    def test_update_DAC_Regs(self):
+    def test_update_DAC_Reg(self):
         gpio = MockGPIO()
         device = AD56x8.AD56x8('AD5628-1', gpio=gpio, clk=1, do=2, cs=3)
 
@@ -184,7 +184,7 @@ class TestAD56x8(unittest.TestCase):
         # Iterate over channels (both by key and value)
         for channel in range(AD56x8.MAX_CHANNELS):
             # Command under test
-            device.update_DAC_Regs(channel)
+            device.update_DAC_Reg(channel)
             data_written = BitArray(gpio.pin_written[2]).uint
             # Set CMD, ADDR fields of 32 bit register for comparison to return
             data_expected = (result_base | ((channel << 20) & 0xffffffff))
@@ -193,7 +193,7 @@ class TestAD56x8(unittest.TestCase):
             gpio.clear()
         for channel in AD56x8.DAC_CHANNELS.keys():
             # Command under test
-            device.update_DAC_Regs(AD56x8.DAC_CHANNELS[channel])
+            device.update_DAC_Reg(AD56x8.DAC_CHANNELS[channel])
             data_written = BitArray(gpio.pin_written[2]).uint
             # Set CMD, ADDR fields of 32 bit register for comparison to return
             data_expected = (result_base | ((AD56x8.DAC_CHANNELS[channel] << 20) & 0xffffffff))
@@ -210,7 +210,7 @@ class TestAD56x8(unittest.TestCase):
         debug_text = "Write to Input Regs Command Update All DAC, Channel / Value:"
         self._dac_input_test_helper(test_command, result_base, debug_text)
 
-    def test_power_mode(self):
+    def test_power_down_mode(self):
         gpio = MockGPIO()
         device = AD56x8.AD56x8('AD5628-1', gpio=gpio, clk=1, do=2, cs=3)
 
@@ -221,7 +221,7 @@ class TestAD56x8(unittest.TestCase):
         for mode_key, mode_val in AD56x8.PD_MODES.items():
             for channel in range(AD56x8.MAX_CHANNELS):
                 # Command under test
-                device.power_mode(mode_key, channel)
+                device.power_down_mode(mode_key, channel)
                 data_written = BitArray(gpio.pin_written[2]).uint
                 # Set CMD, PD_MODE, PD_CH_SEL fields of 32 bit register for comparison to return
                 data_expected = (result_base | ((mode_val << 8) & 0xffffffff)
@@ -233,7 +233,7 @@ class TestAD56x8(unittest.TestCase):
                 for channel in channel_key:
                     if channel in range(AD56x8.MAX_CHANNELS):
                         # Command under test
-                        device.power_mode(channel_key, channel)
+                        device.power_down_mode(channel_key, channel)
                         data_written = BitArray(gpio.pin_written[2]).uint
                         # Set CMD, PD_MODE, PD_CH_SEL fields of 32 bit register for comparison to return
                         data_expected = (result_base | ((channel_val << 8) & 0xffffffff)

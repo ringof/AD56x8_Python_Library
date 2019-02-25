@@ -20,8 +20,8 @@ counter = 0
 
 while True:
     for ch in DAC_CH:
-        dac.write_to_Input_Regs(ch, counter)
-        dac.update_DAC_Regs(ch)
+        dac.write_to_Input_Reg(ch, counter)
+        dac.update_DAC_Reg(ch)
 
     voltage = 2*(dac.VREF)*(counter/(2**dac.DATA_WIDTH))
     counter = (counter + 1) % ((2**dac.DATA_WIDTH)-1)
